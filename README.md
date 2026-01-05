@@ -36,6 +36,8 @@ A progressive tutorial that demystifies AI coding agents like Kode, Claude Code,
 
 ## Quick Start
 
+### With pip
+
 ```bash
 pip install anthropic python-dotenv
 
@@ -49,6 +51,27 @@ python v1_basic_agent.py # Core agent loop
 python v2_todo_agent.py  # + Todo planning
 python v3_subagent.py    # + Subagents
 python v4_skills_agent.py # + Skills
+```
+
+### With uv (recommended)
+
+```bash
+# Install uv if you haven't already
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Install dependencies and run
+uv add anthropic python-dotenv
+
+# Configure your API
+cp .env.example .env
+# Edit .env with your API key
+
+# Run any version
+uv run python v0_bash_agent.py  # Minimal
+uv run python v1_basic_agent.py # Core agent loop
+uv run python v2_todo_agent.py  # + Todo planning
+uv run python v3_subagent.py    # + Subagents
+uv run python v4_skills_agent.py # + Skills
 ```
 
 ## The Core Pattern

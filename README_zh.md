@@ -36,6 +36,8 @@
 
 ## 快速开始
 
+### 使用 pip
+
 ```bash
 pip install anthropic python-dotenv
 
@@ -49,6 +51,27 @@ python v1_basic_agent.py # 核心 Agent 循环
 python v2_todo_agent.py  # + Todo 规划
 python v3_subagent.py    # + 子代理
 python v4_skills_agent.py # + Skills
+```
+
+### 使用 uv（推荐）
+
+```bash
+# 如果还没有安装 uv
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# 安装依赖并运行
+uv add anthropic python-dotenv
+
+# 配置 API
+cp .env.example .env
+# 编辑 .env 填入你的 API key
+
+# 运行任意版本
+uv run python v0_bash_agent.py  # 极简版
+uv run python v1_basic_agent.py # 核心 Agent 循环
+uv run python v2_todo_agent.py  # + Todo 规划
+uv run python v3_subagent.py    # + 子代理
+uv run python v4_skills_agent.py # + Skills
 ```
 
 ## 核心模式
