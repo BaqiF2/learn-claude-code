@@ -348,7 +348,7 @@ def run_read(path: str, limit: int = None) -> str:
         text = safe_path(path).read_text()
         lines = text.splitlines()
         if limit and limit < len(lines):
-            lines = lines[:limit] + [f"... ({len(text.splitlines()) - limit} more)"]
+            lines = lines[:limit] + [f"... ({len(lines) - limit} more)"]
         return "\n".join(lines)[:50000]
     except Exception as e:
         return f"Error: {e}"
@@ -388,7 +388,8 @@ def run_todo(items: list) -> str:
     try:
         return TODO.update(items)
     except Exception as e:
-        return f"Error: {e}"
+        # 即使出错也要显示当前状态
+        return f"Error: {e}\n\nCurrent todos:\n{TODO.render()}"
 
 
 def execute_tool(name: str, args: dict) -> str:
@@ -472,6 +473,14 @@ def agent_loop(messages: list) -> list:
         messages.append({"role": "assistant", "content": response.content})
         messages.append({"role": "user", "content": results})
 
+        # 实时检查：超过阈值时注入提醒
+        if not used_todo and rounds_without_todo > 10 and rounds_without_todo % 10 == 1:
+            # 每10轮提醒一次，避免过度打扰
+            messages.append({
+                "role": "user",
+                "content": [{"type": "text", "text": NAG_REMINDER}]
+            })
+
 
 # =============================================================================
 # Main REPL
@@ -513,9 +522,6 @@ def main():
             # Gentle reminder at start
             content.append({"type": "text", "text": INITIAL_REMINDER})
             first_message = False
-        elif rounds_without_todo > 10:
-            # Nag if model hasn't used todos in a while
-            content.append({"type": "text", "text": NAG_REMINDER})
 
         content.append({"type": "text", "text": user_input})
         history.append({"role": "user", "content": content})
